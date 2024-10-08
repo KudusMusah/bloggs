@@ -4,6 +4,10 @@ import 'package:bloggs/src/features/auth/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class AuthRemoteDatasource {
+  Session? get getCurrentUserSession;
+
+  Future<UserModel?> getLoggedInUser();
+
   Future<UserModel> signUpWithEmailPassword(
     String email,
     String password,
@@ -23,6 +27,29 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDatasource {
   });
 
   @override
+  Session? get getCurrentUserSession => superbase.auth.currentSession;
+
+  @override
+  Future<UserModel?> getLoggedInUser() async {
+    try {
+      final userSession = getCurrentUserSession;
+      if (userSession != null) {
+        final user = await superbase.from('profiles').select().eq(
+              "id",
+              userSession.user.id,
+            );
+
+        return UserModel.fromJson(user.first).copyWith(
+          email: userSession.user.email,
+        );
+      }
+      return null;
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
   Future<UserModel> loginUpWithEmailPassword(
     String email,
     String password,
@@ -35,9 +62,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDatasource {
         throw ServerException("User is null");
       }
 
-      return UserModel.fromJson(
-        res.user!.toJson(),
-      );
+      return UserModel.fromJson(res.user!.toJson());
     } catch (e) {
       throw ServerException(e.toString());
     }
@@ -59,9 +84,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDatasource {
         throw ServerException("User is null");
       }
 
-      return UserModel.fromJson(
-        res.user!.toJson(),
-      );
+      return UserModel.fromJson(res.user!.toJson());
     } catch (e) {
       throw ServerException(e.toString());
     }

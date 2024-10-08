@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'package:bloggs/src/core/theme/theme_colors.dart';
-import 'package:bloggs/src/core/widgets/custom_button.dart';
+import 'package:bloggs/src/core/common/widgets/custom_button.dart';
 import '../widgets/signup_icons.dart';
 
 class SignInScreen extends StatefulWidget {

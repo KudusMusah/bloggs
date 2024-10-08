@@ -1,3 +1,4 @@
+import 'package:bloggs/src/core/common/widgets/custom_button.dart';
 import 'package:bloggs/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
@@ -5,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'package:bloggs/src/core/theme/theme_colors.dart';
-import 'package:bloggs/src/core/widgets/custom_button.dart';
 import '../widgets/signup_icons.dart';
 
 class SignUpScreen extends StatefulWidget {

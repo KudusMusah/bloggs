@@ -27,15 +27,6 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPressed,
-      child: Text(
-        text,
-        style: TextStyle(
-          color: AppThemeColors.kWhiteColor,
-          fontSize: 16.5.sp,
-          fontWeight: FontWeight.w600,
-          fontFamily: "Poppins",
-        ),
-      ),
       style: TextButton.styleFrom(
         fixedSize: width == null ? null : Size(width!, 7.h),
         backgroundColor: backgroundColor ?? AppThemeColors.kPrimaryButtonColor,
@@ -46,6 +37,15 @@ class CustomButton extends StatelessWidget {
             color: borderColor ?? AppThemeColors.kPrimaryButtonColor,
             width: 0.4,
           ),
+        ),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: AppThemeColors.kWhiteColor,
+          fontSize: 16.5.sp,
+          fontWeight: FontWeight.w600,
+          fontFamily: "Poppins",
         ),
       ),
     );

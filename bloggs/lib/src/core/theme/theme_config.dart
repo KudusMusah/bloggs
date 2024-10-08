@@ -10,11 +10,11 @@ class ThemeConfig {
     return ThemeData.dark().copyWith(
       primaryColor: AppThemeColors.kPrimaryButtonColor,
       scaffoldBackgroundColor: AppThemeColors.kPrimaryBackgroundColor,
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
           backgroundColor: AppThemeColors.kPrimaryBackgroundColor,
           surfaceTintColor: AppThemeColors.kPrimaryBackgroundColor),
       inputDecorationTheme: InputDecorationTheme(
-        errorStyle: TextStyle(color: AppThemeColors.kPrimaryButtonColor),
+        errorStyle: const TextStyle(color: AppThemeColors.kPrimaryButtonColor),
         focusedErrorBorder: OutlineInputBorder(
           borderSide: const BorderSide(
             width: 1,
@@ -29,7 +29,7 @@ class ThemeConfig {
           ),
           borderRadius: BorderRadius.circular(5),
         ),
-        labelStyle: TextStyle(
+        labelStyle: const TextStyle(
           color: AppThemeColors.kWhiteColor,
         ),
         contentPadding: EdgeInsets.all(1.8.h),

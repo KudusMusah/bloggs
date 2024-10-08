@@ -23,3 +23,5 @@ class UserLogin extends AuthEvent {
     required this.password,
   });
 }
+
+class LoggedInUser extends AuthEvent {}

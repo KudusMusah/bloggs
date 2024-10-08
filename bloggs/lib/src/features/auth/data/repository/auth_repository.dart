@@ -1,11 +1,10 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:bloggs/src/core/error/exception.dart';
 import 'package:bloggs/src/features/auth/data/models/user_model.dart';
-import 'package:fpdart/src/either.dart';
 
 import 'package:bloggs/src/core/error/failure.dart';
 import 'package:bloggs/src/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:bloggs/src/features/auth/domain/repository/auth_respository.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRepositoryImpl implements AuthRespository {
@@ -14,6 +13,20 @@ class AuthRepositoryImpl implements AuthRespository {
   AuthRepositoryImpl({
     required this.authRemoteDataSource,
   });
+
+  @override
+  Future<Either<Failure, UserModel>> getLoggedInUser() async {
+    try {
+      final user = await authRemoteDataSource.getLoggedInUser();
+
+      if (user == null) {
+        return left(Failure("User is not logged in"));
+      }
+      return right(user);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
 
   @override
   Future<Either<Failure, UserModel>> loginUpWithEmailPassword(

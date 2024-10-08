@@ -1,4 +1,4 @@
-import 'package:bloggs/src/features/auth/domain/entities/user_entity.dart';
+import 'package:bloggs/src/core/common/entities/user_entity.dart';
 
 class UserModel extends User {
   UserModel({
@@ -9,9 +9,21 @@ class UserModel extends User {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'],
-      email: json['email'],
-      name: json['name'],
+      id: json['id'] ?? "",
+      email: json['email'] ?? "",
+      name: json['name'] ?? "",
+    );
+  }
+
+  UserModel copyWith({
+    String? name,
+    String? email,
+    String? id,
+  }) {
+    return UserModel(
+      name: name ?? this.name,
+      email: email ?? this.email,
+      id: id ?? this.id,
     );
   }
 }
