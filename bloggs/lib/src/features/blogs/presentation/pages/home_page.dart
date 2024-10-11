@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
             fontFamily: "Poppins",
           ),
         ),
+        surfaceTintColor: Colors.white,
       ),
       body: BlocConsumer<BlogBloc, BlogState>(
         listener: (context, state) {

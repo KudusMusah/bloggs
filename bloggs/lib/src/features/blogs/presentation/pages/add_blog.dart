@@ -79,7 +79,10 @@ class _AddBlogState extends State<AddBlog> {
         }
         if (state is BlogSuccess) {
           Navigator.pushNamedAndRemoveUntil(
-              context, '/homePage', (route) => true);
+            context,
+            '/homePage',
+            (route) => false,
+          );
         }
       },
       builder: (context, state) {

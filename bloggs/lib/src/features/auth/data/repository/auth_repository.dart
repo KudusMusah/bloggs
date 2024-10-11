@@ -18,7 +18,7 @@ class AuthRepositoryImpl implements AuthRespository {
   @override
   Future<Either<Failure, UserModel>> getLoggedInUser() async {
     try {
-      if (!await internetConnection.hasInternectConnection) {
+      if (!await (internetConnection.hasInternectConnection)) {
         final userSession = authRemoteDataSource.getCurrentUserSession;
         if (userSession == null) {
           return left(Failure("User is not logged In"));
@@ -48,7 +48,7 @@ class AuthRepositoryImpl implements AuthRespository {
     String email,
     String password,
   ) async {
-    if (!await internetConnection.hasInternectConnection) {
+    if (!await (internetConnection.hasInternectConnection)) {
       return left(Failure("No network conection"));
     }
     try {
@@ -66,7 +66,7 @@ class AuthRepositoryImpl implements AuthRespository {
     String password,
     String name,
   ) async {
-    if (!await internetConnection.hasInternectConnection) {
+    if (!await (internetConnection.hasInternectConnection)) {
       return left(Failure("No network conection"));
     }
     try {
