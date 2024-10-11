@@ -8,7 +8,7 @@ import 'package:bloggs/src/features/auth/domain/repository/auth_respository.dart
 
 class AuthRepositoryImpl implements AuthRespository {
   final AuthRemoteDatasource authRemoteDataSource;
-  final InternetConnection internetConnection;
+  final InternetConnectionChecker internetConnection;
 
   AuthRepositoryImpl({
     required this.authRemoteDataSource,

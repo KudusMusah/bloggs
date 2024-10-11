@@ -25,8 +25,8 @@ void _initAuth() {
     ),
   );
 
-  serviceLocator.registerFactory<InternetConnection>(
-    () => InternetConnectionImpl(),
+  serviceLocator.registerFactory<InternetConnectionChecker>(
+    () => InternetConnectionCheckerImpl(),
   );
 
   // Repository

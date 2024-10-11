@@ -15,7 +15,7 @@ import 'package:bloggs/src/features/blogs/domain/repositories/blog_repository.da
 class BlogRepositoryImpl implements BlogRepository {
   final BlogRemoteDatasource blogRemoteDatasource;
   final BlogLocalDatasource blogLocalDatasource;
-  final InternetConnection internetConnection;
+  final InternetConnectionChecker internetConnection;
 
   BlogRepositoryImpl({
     required this.blogRemoteDatasource,
@@ -31,7 +31,7 @@ class BlogRepositoryImpl implements BlogRepository {
     File image,
     List<String> categories,
   ) async {
-    if (!await internetConnection.hasInternectConnection) {
+    if (!await (internetConnection.hasInternectConnection)) {
       return left(Failure("No network connection"));
     }
     try {
@@ -60,7 +60,7 @@ class BlogRepositoryImpl implements BlogRepository {
   @override
   Future<Either<Failure, List<BlogModel>>> geAllBlogs() async {
     try {
-      if (!await internetConnection.hasInternectConnection) {
+      if (!await (internetConnection.hasInternectConnection)) {
         return right(blogLocalDatasource.getLocalBlogs());
       }
       final blogs = await blogRemoteDatasource.getAllBlogs();
