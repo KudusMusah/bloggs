@@ -1,4 +1,5 @@
 import 'package:bloggs/src/core/common/widgets/custom_button.dart';
+import 'package:bloggs/src/core/utils/snack_bar.dart';
 import 'package:bloggs/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
@@ -50,13 +51,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailure) {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
+            showSnackBar(context, state.message);
           }
         },
         builder: (context, state) {
@@ -65,6 +60,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: CircularProgressIndicator(),
             );
           }
+          if (state is AuthSuccess) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/homePage', (route) => true);
+          }
+
           return SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 7.w),

@@ -1,22 +1,37 @@
-import 'package:bloggs/src/core/error/exception.dart';
-import 'package:bloggs/src/features/auth/data/models/user_model.dart';
-
-import 'package:bloggs/src/core/error/failure.dart';
-import 'package:bloggs/src/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:bloggs/src/features/auth/domain/repository/auth_respository.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:bloggs/src/core/error/exception.dart';
+import 'package:bloggs/src/core/error/failure.dart';
+import 'package:bloggs/src/core/network/internet_connection.dart';
+import 'package:bloggs/src/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:bloggs/src/features/auth/data/models/user_model.dart';
+import 'package:bloggs/src/features/auth/domain/repository/auth_respository.dart';
 
 class AuthRepositoryImpl implements AuthRespository {
-  final AuthRemoteDataSourceImpl authRemoteDataSource;
+  final AuthRemoteDatasource authRemoteDataSource;
+  final InternetConnection internetConnection;
 
   AuthRepositoryImpl({
     required this.authRemoteDataSource,
+    required this.internetConnection,
   });
 
   @override
   Future<Either<Failure, UserModel>> getLoggedInUser() async {
     try {
+      if (!await internetConnection.hasInternectConnection) {
+        final userSession = authRemoteDataSource.getCurrentUserSession;
+        if (userSession == null) {
+          return left(Failure("User is not logged In"));
+        }
+        final user = userSession.user;
+        return right(
+          UserModel(
+            id: user.id,
+            email: user.email ?? "",
+            name: "",
+          ),
+        );
+      }
       final user = await authRemoteDataSource.getLoggedInUser();
 
       if (user == null) {
@@ -33,12 +48,13 @@ class AuthRepositoryImpl implements AuthRespository {
     String email,
     String password,
   ) async {
+    if (!await internetConnection.hasInternectConnection) {
+      return left(Failure("No network conection"));
+    }
     try {
       final res =
           await authRemoteDataSource.loginUpWithEmailPassword(email, password);
       return right(res);
-    } on AuthException catch (e) {
-      return left(Failure(e.message));
     } on ServerException catch (e) {
       return left(Failure(e.message));
     }
@@ -50,6 +66,9 @@ class AuthRepositoryImpl implements AuthRespository {
     String password,
     String name,
   ) async {
+    if (!await internetConnection.hasInternectConnection) {
+      return left(Failure("No network conection"));
+    }
     try {
       final res = await authRemoteDataSource.signUpWithEmailPassword(
         email,
@@ -57,8 +76,6 @@ class AuthRepositoryImpl implements AuthRespository {
         name,
       );
       return right(res);
-    } on AuthException catch (e) {
-      return left(Failure(e.message));
     } on ServerException catch (e) {
       return left(Failure(e.message));
     }
